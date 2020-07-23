@@ -22,6 +22,8 @@ namespace TodoApi.Controllers
 
         // GET: api/TodoItems
         [HttpGet]
+        [ApiConventionMethod(typeof(DefaultApiConventions),
+                             nameof(DefaultApiConventions.Get))]
         public async Task<ActionResult<IEnumerable<TodoItemDTO>>> GetTodoItems()
         {
             return await _context.TodoItems.Select(x => ItemToDTO(x)).ToListAsync();
@@ -29,6 +31,8 @@ namespace TodoApi.Controllers
 
         // GET: api/TodoItems/5
         [HttpGet("{id}")]
+        [ApiConventionMethod(typeof(DefaultApiConventions),
+                             nameof(DefaultApiConventions.Get))]
         public async Task<ActionResult<TodoItemDTO>> GetTodoItem(long id)
         {
             var todoItem = await _context.TodoItems.FindAsync(id);
@@ -44,7 +48,12 @@ namespace TodoApi.Controllers
         // PUT: api/TodoItems/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+
         [HttpPut("{id}")]
+        [ApiConventionMethod(typeof(DefaultApiConventions),
+                             nameof(DefaultApiConventions.Put))]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateTodoItem(long id, TodoItemDTO todoItemDTO)
         {
             if (id != todoItemDTO.Id)
@@ -77,6 +86,8 @@ namespace TodoApi.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [ApiConventionMethod(typeof(DefaultApiConventions),
+                             nameof(DefaultApiConventions.Post))]
         public async Task<ActionResult<TodoItemDTO>> CreateTodoItem(TodoItemDTO todoItemDTO)
         {
             var todoItem = new TodoItem
@@ -93,6 +104,8 @@ namespace TodoApi.Controllers
 
         // DELETE: api/TodoItems/5
         [HttpDelete("{id}")]
+        [ApiConventionMethod(typeof(DefaultApiConventions),
+                             nameof(DefaultApiConventions.Delete))]
         public async Task<ActionResult<TodoItem>> DeleteTodoItem(long id)
         {
             var todoItem = await _context.TodoItems.FindAsync(id);
